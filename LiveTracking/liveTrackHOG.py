@@ -11,8 +11,9 @@ cv2.startWindowThread()
 # Start the video capture
 cap = cv2.VideoCapture(0)
 
-# Output will be written to output.avi
-# out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (640, 480))
+# Define the two ROIs
+roi1 = [(0, 0), (640, 320)]
+roi2 = [(0, 320), (640, 480)]
 
 previous_count = 0
 current_count = 0
@@ -23,12 +24,6 @@ while True:
 
     # Resize the frame
     frame = cv2.resize(frame, (640, 480))
-
-    # Convert the frame to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # Apply thresholding to the frame
-    #ret, thresh = cv2.threshold(frame, 80, 255, cv2.THRESH_BINARY)
 
     # Detect bodies in the frame
     boxes, weights = hog.detectMultiScale(frame, winStride=(8,8))
