@@ -12,8 +12,11 @@ cv2.startWindowThread()
 cap = cv2.VideoCapture(0)
 
 # Output will be written to output.avi
-out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (640, 480))
+# out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (640, 480))
 
+previous_count = 0
+current_count = 0
+total_count = 0
 while True:
     # Read the frame from the camera
     ret, frame = cap.read()
@@ -32,12 +35,19 @@ while True:
 
     boxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
 
+    current_count = 0
+
     # Draw a rectangle around each body
     for (x, y, w, h) in boxes:
         cv2.rectangle(frame, (x, y), (w, h), (0, 255, 0), 2)
+        current_count += 1
+
+    count_diff = current_count - previous_count
+    total_count += count_diff
+    # print("People count difference: ", count_diff)
 
     # Write the frame to the output file
-    out.write(frame.astype('uint8'))
+    # out.write(frame.astype('uint8'))
 
     # Display the resulting frame
     cv2.imshow('frame', frame)
@@ -46,7 +56,11 @@ while True:
     if cv2.waitKey(1) == ord('q'):
         break
 
+    previous_count = current_count
+
+print("Total number of people who entered the room: ", total_count)
+
 # Release the capture and close the window
 cap.release()
-out.release()
+# out.release()
 cv2.destroyAllWindows()
