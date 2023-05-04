@@ -11,10 +11,6 @@ cv2.startWindowThread()
 # Start the video capture
 cap = cv2.VideoCapture(0)
 
-# Define the two ROIs
-roi1 = [(0, 0), (640, 320)]
-roi2 = [(0, 320), (640, 480)]
-
 previous_count = 0
 current_count = 0
 total_count = 0
