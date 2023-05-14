@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@200&display=swap");
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 18px;
+    margin: 0;
+}
+
+header{
+    margin: 40px auto;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+}
+
+.topBox{
+    background-color: #05386B;
+    border-bottom: 2px solid #85754d;
+    color: #05386B;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: auto;
+}
+
+#wrapper{
+    line-height: 200%;
+    margin: auto;
+    background-color: #e8e3d3;
+}
+
+nav a{
+    text-decoration: none;
+    padding: 5px 25px;
+    display: block;
+    transition: 0.5s;
+    color: #85754d
+}
+
+nav ul{
+    padding-left: 150px;
+    float: right;
+    width: 70%;
+    text-align: center;
+}
+
+nav li{
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+}
+
+nav a:hover{
+    color: #e8e3d3;
+    background-color: #379682;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+.clearfix{
+    clear: both;
+}
+
+main{
+    width: 80%;
+    margin: 40px auto;
+    border-top: solid 10px #85754d;
+}
+
+footer{
+    background-color: #05386B;
+    color:#FFFFFF;
+    padding: 20px;
+    margin-top: 40px;
+    font-size: .60em;
+    font-style: italic;
+    text-align: center;
+    border-top: 2px solid #85754d;
+}
+
+footer a{
+    text-align: center;
+    text-decoration: none;
+    color: #85754d;
+    
+}
+
+footer a:hover{
+    color: #e8e3d3;
+    font-weight: bold;
+}
+
+.banner{
+    text-align: center;
+    margin-top: 84px;
+    
+
+}
+
+.heatMap{
+    width: 73%;
+    box-shadow: 10px 15px 3px #85754d;
+    margin-top: 25px;
+}
+
+.heatMap img{
+    width: 100%; 
+    display: block;
+}
