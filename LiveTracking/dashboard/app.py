@@ -7,6 +7,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/heatMap')
+def heatMap():
+    return render_template('heatMap.html')
+
+@app.route('/license')
+def license():
+    return render_template('License.html')
+
 def gen(camera):
     while True:
         frame = camera.get_frame()
