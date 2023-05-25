@@ -1,6 +1,33 @@
 import cv2
 import numpy as np
 
+dimentions = (600,480)
+
+def intersection_area(a,b):
+    x = max(a[0], b[0])
+    y = max(a[1], b[1])
+    w = min(a[0]+a[2], b[0]+b[2]) - x
+    h = min(a[1]+a[3], b[1]+b[3]) - y
+    if w<0 or h<0: return 0
+    return w*h
+
+def max_intersect(a,b):
+    area = intersection_area(a,b)
+    a_ratio = area/(a[2]*a[3])
+    b_ratio = area/(b[2]*b[3])
+    return max(a_ratio,b_ratio)
+
+def get_region(a):
+    ret = 1
+    if a[1] + a[3] > 240:
+        ret +=2
+    if a[0] + a[2] > 300:
+        ret+=1
+    return ret
+
+
+
+
 class VideoCamera(object):
     def __init__(self):
         # Start the video capture
@@ -11,9 +38,15 @@ class VideoCamera(object):
         self.hog = cv2.HOGDescriptor()
         self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
+        self.tracker = cv2.legacy.TrackerMOSSE_create()
+        self.active_trackers = []
+        self.active_people_locations = []
+
         self.previous_count = 0
         self.current_count = 0
         self.total_count = 0
+
+    
 
     def __del__(self):
         # Release the capture
@@ -25,19 +58,35 @@ class VideoCamera(object):
         ret, frame = self.video.read()
 
         # Resize the frame
-        frame = cv2.resize(frame, (640, 480))
+        frame = cv2.resize(frame, dimentions)
+
+        #update list of trackers
+        for i, tracker in enumerate(self.active_trackers):
+            success, bbox = tracker.update(frame)
+            if success:
+                x, y, w, h = [int(v) for v in bbox]
+                self.active_people_locations[i] = get_region(bbox)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            else:
+                self.active_people_locations[i] = 0
 
         # Detect bodies in the frame
-        boxes, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
+        human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
 
-        boxes = np.array([[x, y, x + w, y + h] for (x, y, w, h) in boxes])
 
         self.current_count = 0
 
         # Draw a rectangle around each body
-        for (x, y, w, h) in boxes:
-            cv2.rectangle(frame, (x, y), (w, h), (0, 255, 0), 2)
-            self.current_count += 1
+        for (x,y,w,h) in human:
+            bbox = (x,y,w,h)
+            for i, tracker in enumerate(self.active_trackers):
+                if max_intersect(bbox,tracker) < 0.8:
+                    self.tracker.init(frame, bbox)
+                    self.active_trackers.append(tracker)
+                    self.active_people_locations.append(get_region(bbox))
+                    x, y, w, h = [int(v) for v in bbox]
+                    cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)    
+
 
         count_diff = self.current_count - self.previous_count
         self.total_count += count_diff
