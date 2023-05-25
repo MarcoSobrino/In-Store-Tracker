@@ -1,6 +1,6 @@
 import cv2 as cv
 
-img = cv.imread('Photos\school.jpg')
+img = cv.imread('OpenCVpractice\\Photos\\school.jpg')
 
 cv.imshow('School', img)
 ###

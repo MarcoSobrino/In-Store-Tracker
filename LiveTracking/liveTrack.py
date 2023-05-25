@@ -1,7 +1,11 @@
+import platform
 import cv2
 
 # Load the classifier
-body_cascade = cv2.CascadeClassifier('/Users/marcosobr/Desktop/Science of Computers/SeniorProject/In-Store-Tracker/LiveTracking/components/haarcascade_fullbody.xml')
+if platform.system() == 'Windows'   :
+    body_cascade = cv2.CascadeClassifier('LiveTracking\\components\\haarcascade_fullbody.xml')
+else:
+    body_cascade = cv2.CascadeClassifier('LiveTracking\components\haarcascade_fullbody.xml')
 
 # Start the video capture
 cap = cv2.VideoCapture(0)
