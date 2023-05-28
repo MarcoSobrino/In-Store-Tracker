@@ -72,20 +72,24 @@ class VideoCamera(object):
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
-
+        
+        
 
         self.current_count = 0
 
         # Draw a rectangle around each body
         for (x,y,w,h) in human:
             bbox = (x,y,w,h)
+            inList = False
             for i, tracker in enumerate(self.active_trackers):
                 if max_intersect(bbox,tracker) < 0.8:
-                    self.tracker.init(frame, bbox)
-                    self.active_trackers.append(tracker)
-                    self.active_people_locations.append(get_region(bbox))
-                    x, y, w, h = [int(v) for v in bbox]
-                    cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)    
+                    inList = True
+            if !inList:
+                self.tracker.init(frame, bbox)
+                self.active_trackers.append(tracker)
+                self.active_people_locations.append(get_region(bbox))
+                x, y, w, h = [int(v) for v in bbox]
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)    
 
 
         count_diff = self.current_count - self.previous_count
