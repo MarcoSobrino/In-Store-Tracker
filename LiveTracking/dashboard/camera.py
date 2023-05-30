@@ -47,6 +47,8 @@ class VideoCamera(object):
         self.current_count = 0
         self.total_count = 0
 
+        self.file = open("locations.txt", "w")
+
     
 
     def __del__(self):
@@ -112,10 +114,10 @@ class VideoCamera(object):
         
             
         
-        file = open("locations.txt", "w")
+        
         for location in self.active_trackers_locations:
-            file.write(str(location))
-        file.close()
+            self.file.write(str(location))
+        self.file.write("\n")
 
         return jpeg.tobytes()
 
