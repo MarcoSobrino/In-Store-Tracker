@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-dimensions = (600,480)
+dimentions = (600,480)
 
 def intersection_area(a,b):
     x = max(a[0], b[0])
@@ -47,8 +47,6 @@ class VideoCamera(object):
         self.current_count = 0
         self.total_count = 0
 
-
-
     
 
     def __del__(self):
@@ -61,12 +59,14 @@ class VideoCamera(object):
         ret, frame = self.video.read()
 
         # Resize the frame
-        frame = cv2.resize(frame, (0, dimensions[1]/2), (dimensions[0],dimensions[1]/2), (0, 0, 255), 1)
-        frame = cv2.resize(frame, (dimensions[0]/2,0), (dimensions[0]/2,dimensions[1]), (0, 0, 255), 1)
+        frame = cv2.resize(frame, dimentions)
+        cv2.line(frame, (0, dimensions[1]/2), (dimensions[0],dimensions[1]/2), (0, 0, 255), 1)
+        cv2.line(frame, (dimensions[0]/2,0), (dimensions[0]/2,dimensions[1]), (0, 0, 255), 1)
+        
 
         #update list of trackers
         for i, tracker in enumerate(self.active_trackers):
-            if tracker != 0:
+            if tracker not 0:
                 success, bbox = self.active_trackers[i].update(frame)
                 if success:
                     x, y, w, h = [int(v) for v in bbox]
