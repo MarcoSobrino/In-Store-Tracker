@@ -47,7 +47,7 @@ class VideoCamera(object):
         self.current_count = 0
         self.total_count = 0
 
-        self.file = open("locations.txt", "w")
+
 
     
 
@@ -55,7 +55,6 @@ class VideoCamera(object):
         # Release the capture
         self.video.release()
         cv2.destroyAllWindows()
-        self.file.close()
 
     def get_frame(self):
         # Read the frame from the camera
@@ -114,11 +113,10 @@ class VideoCamera(object):
         #push locations to file
         
             
-        
-        
-        for location in self.active_trackers_locations:
-            self.file.write(str(location))
-        self.file.write("\n")
+        with open("output.txt", "w") as file:      
+            for location in self.active_trackers_locations:
+                file.write(str(location))
+            file.write("\n")
 
         return jpeg.tobytes()
 
