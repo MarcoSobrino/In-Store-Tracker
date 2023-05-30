@@ -74,7 +74,8 @@ class VideoCamera(object):
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
-        
+        for (x,y,w,h) in human:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
         
 
         # Add unknown humans to tracker list
