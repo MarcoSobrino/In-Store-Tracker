@@ -19,8 +19,8 @@ def max_intersect(a,b):
 
 def get_region(a):
     ret = 1
-    if a[1] + a[3] > 240:
-        ret +=2
+    # if a[1] + a[3] > 240:
+    #     ret +=2
     if a[0] + a[2] > 300:
         ret+=1
     return ret
@@ -46,6 +46,8 @@ class VideoCamera(object):
         self.previous_count = 0
         self.current_count = 0
         self.total_count = 0
+        with open("output.txt", "w") as file:      
+            file.write("\n")
 
 
 
@@ -62,7 +64,7 @@ class VideoCamera(object):
 
         # Resize the frame
         frame = cv2.resize(frame, dimensions)
-        cv2.line(frame, (0, 240), (600,240), (0, 0, 255), 1)
+        # cv2.line(frame, (0, 240), (600,240), (0, 0, 255), 1)
         cv2.line(frame, (300,0), (300,480), (0, 0, 255), 1)
         
 
