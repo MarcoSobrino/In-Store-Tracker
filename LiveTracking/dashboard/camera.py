@@ -108,5 +108,14 @@ class VideoCamera(object):
         # Encode the frame as an image file
         ret, jpeg = cv2.imencode('.jpg', frame)
 
+        #push locations to file
+        
+            
+        
+        file = open("locations.txt", "w")
+        for i,location in enumerate(self.active_trackers_locations):
+            file.write(location[])
+        file.close()
+
         return jpeg.tobytes()
 
