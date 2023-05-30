@@ -16,8 +16,10 @@ def license():
     return render_template('License.html')
 
 def gen(camera):
+    frame_count = 0
     while True:
-        frame = camera.get_frame()
+        frame_count+= 1
+        frame = camera.get_frame(frame_count)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame 
                + b'\r\n\r\n')
