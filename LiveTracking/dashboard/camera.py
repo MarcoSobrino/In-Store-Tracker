@@ -60,8 +60,8 @@ class VideoCamera(object):
 
         # Resize the frame
         frame = cv2.resize(frame, dimensions)
-        cv2.line(frame, (0, dimensions[1]/2), (dimensions[0],dimensions[1]/2), (0, 0, 255), 1)
-        cv2.line(frame, (dimensions[0]/2,0), (dimensions[0]/2,dimensions[1]), (0, 0, 255), 1)
+        cv2.line(frame, (0, 300), (480,300), (0, 0, 255), 1)
+        cv2.line(frame, (240,0), (240,600), (0, 0, 255), 1)
         
 
         #update list of trackers
