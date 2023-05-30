@@ -83,7 +83,7 @@ class VideoCamera(object):
             bbox = (x,y,w,h)
             inList = False
             for i, tracker in enumerate(self.active_trackers_bbox):
-                if max_intersect(bbox,tracker) < 0.8:
+                if max_intersect(bbox,tracker) > 0.8:
                     inList = True
             if not inList:
                 #create new tracker
