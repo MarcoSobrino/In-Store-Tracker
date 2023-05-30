@@ -84,7 +84,7 @@ class VideoCamera(object):
             for i, tracker in enumerate(self.active_trackers):
                 if max_intersect(bbox,tracker) < 0.8:
                     inList = True
-            if !inList:
+            if not inList:
                 self.tracker.init(frame, bbox)
                 self.active_trackers.append(tracker)
                 self.active_people_locations.append(get_region(bbox))
