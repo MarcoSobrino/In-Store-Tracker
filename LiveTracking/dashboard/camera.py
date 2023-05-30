@@ -55,6 +55,7 @@ class VideoCamera(object):
         # Release the capture
         self.video.release()
         cv2.destroyAllWindows()
+        self.file.close()
 
     def get_frame(self):
         # Read the frame from the camera
