@@ -112,10 +112,10 @@ class VideoCamera(object):
         
             
         
-        # file = open("locations.txt", "w")
-        # for i,location in enumerate(self.active_trackers_locations):
-        #     file.write(location[i])
-        # file.close()
+        file = open("locations.txt", "w")
+        for i,location in enumerate(self.active_trackers_locations):
+            file.write(str(location[i]))
+        file.close()
 
         return jpeg.tobytes()
 
