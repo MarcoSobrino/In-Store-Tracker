@@ -40,7 +40,8 @@ class VideoCamera(object):
 
         self.tracker = cv2.legacy.TrackerMOSSE_create()
         self.active_trackers = []
-        self.active_people_locations = []
+        self.active_trackers_bbox = []
+        self.active_trackers_locations = []
 
         self.previous_count = 0
         self.current_count = 0
@@ -62,40 +63,41 @@ class VideoCamera(object):
 
         #update list of trackers
         for i, tracker in enumerate(self.active_trackers):
-            success, bbox = tracker.update(frame)
+            success, bbox = self.active_trackers[i].update(frame)
             if success:
                 x, y, w, h = [int(v) for v in bbox]
-                self.active_people_locations[i] = get_region(bbox)
+                self.active_trackers_locations[i] = get_region(bbox)
+                self.active_trackers_bbox[i] = bbox
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
             else:
-                self.active_people_locations[i] = 0
+                self.active_trackers_locations[i] = 0
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
         
         
 
-        self.current_count = 0
-
-        # Draw a rectangle around each body
+        # Add unknown humans to tracker list
         for (x,y,w,h) in human:
             bbox = (x,y,w,h)
             inList = False
-            for i, tracker in enumerate(self.active_trackers):
+            for i, tracker in enumerate(self.active_trackers_bbox):
                 if max_intersect(bbox,tracker) < 0.8:
                     inList = True
             if not inList:
-                self.tracker.init(frame, bbox)
-                self.active_trackers.append(tracker)
-                self.active_people_locations.append(get_region(bbox))
+                #create new tracker
+                new_tracker = cv2.legacy.TrackerMOSSE_create()
+                new_tracker.init(frame, bbox)
+
+                #add things to all the lists
+                self.active_trackers.append(new_tracker)
+                self.active_trackers_bbox.append(bbox)
+                self.active_trackers_locations.append(get_region(bbox))
+
+                #draw box
                 x, y, w, h = [int(v) for v in bbox]
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)    
 
-
-        count_diff = self.current_count - self.previous_count
-        self.total_count += count_diff
-
-        self.previous_count = self.current_count
 
         # Encode the frame as an image file
         ret, jpeg = cv2.imencode('.jpg', frame)
