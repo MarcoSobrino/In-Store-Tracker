@@ -47,6 +47,8 @@ class VideoCamera(object):
         self.current_count = 0
         self.total_count = 0
 
+
+
     
 
     def __del__(self):
@@ -59,18 +61,22 @@ class VideoCamera(object):
         ret, frame = self.video.read()
 
         # Resize the frame
-        frame = cv2.resize(frame, dimentions)
+        frame = cv2.resize(frame, (0, dimentions[1]/2), (dimention[0],dimentions[1]/2), (0, 0, 255), 1)
+        frame = cv2.resize(frame, (dimentions[0]/2,0), (dimention[0]/2,dimentions[1]), (0, 0, 255), 1)
+        cv2.line(frame, )
 
         #update list of trackers
         for i, tracker in enumerate(self.active_trackers):
-            success, bbox = self.active_trackers[i].update(frame)
-            if success:
-                x, y, w, h = [int(v) for v in bbox]
-                self.active_trackers_locations[i] = get_region(bbox)
-                self.active_trackers_bbox[i] = bbox
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            else:
-                self.active_trackers_locations[i] = 0
+            if tracker not 0:
+                success, bbox = self.active_trackers[i].update(frame)
+                if success:
+                    x, y, w, h = [int(v) for v in bbox]
+                    self.active_trackers_locations[i] = get_region(bbox)
+                    self.active_trackers_bbox[i] = bbox
+                    cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                else:
+                    self.active_trackers[i] = 0
+                    self.active_trackers_locations[i] = 0
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
