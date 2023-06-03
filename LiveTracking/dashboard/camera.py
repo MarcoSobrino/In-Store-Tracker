@@ -3,6 +3,14 @@ import numpy as np
 
 dimensions = (600,480)
 
+def inFrame(a):
+    if a[0] < 0 or a[1] < 0:
+        return False
+    if a[0] + a[2] > 600 or a[1] + a[3] > 480:
+        return False
+    return True
+    
+
 def intersection_area(a,b):
     x = max(a[0], b[0])
     y = max(a[1], b[1])
@@ -72,7 +80,7 @@ class VideoCamera(object):
         for i, tracker in enumerate(self.active_trackers):
             if tracker != 0:
                 success, bbox = self.active_trackers[i].update(frame)
-                if success:
+                if success and inFrame(bbox):
                     x, y, w, h = [int(v) for v in bbox]
                     self.active_trackers_locations[i] = get_region(bbox)
                     self.active_trackers_bbox[i] = bbox
@@ -80,6 +88,7 @@ class VideoCamera(object):
                 else:
                     self.active_trackers[i] = 0
                     self.active_trackers_locations[i] = 0
+                    #self.active_trackers_bbox[i] = 0
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
