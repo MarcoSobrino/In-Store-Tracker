@@ -28,7 +28,7 @@ def get_region(a):
 
 
 
-class VideoCameraHuman(object):
+class VideoCamera(object):
     def __init__(self):
         # Start the video capture
         self.video = cv2.VideoCapture(0)
@@ -85,6 +85,8 @@ class VideoCameraHuman(object):
 
                 #add things the lists
                 self.past_humans.append(bbox)
+                self.unchanged_history.append(0)
+
         for i,history in enumerate(self.unchanged_history):
             if history > 10:
                 self.unchanged_history.pop(i)
