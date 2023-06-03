@@ -21,7 +21,7 @@ def get_region(a):
     ret = 1
     # if a[1] + a[3] > 240:
     #     ret +=2
-    if a[0] + a[2] > 300:
+    if a[0] + (a[2]/2) > 300:
         ret+=1
     return ret
 
@@ -100,7 +100,7 @@ class VideoCamera(object):
         #push locations to file
         
         if count%10 == 0:    
-            with open("output.txt", "a") as file:      
+            with open("output_opy.txt", "a") as file:      
                 for location in self.past_humans:
                     file.write(str(get_region(location)))
                 file.write("\n")
