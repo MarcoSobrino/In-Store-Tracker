@@ -1,3 +1,5 @@
+import sqlite3
+
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 
@@ -27,5 +29,23 @@ def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+con = sqlite3.connect('LiveTracking.db')
+c = con.cursor()
+c.execute("""CREATE TABLE IF NOT EXISTS timeTable (
+            customerID integer,
+            startTime interger,
+            endTime integer
+            )""")
+
+# c.execute("INSERT INTO timeTable VALUES (1, 0, 0)")
+# c.execute("INSERT INTO timeTable VALUES (2, 0, 0)")
+c.execute("SELECT * from timeTable")
+print(c.fetchall())
+
+con.commit()
+
+
+
 if __name__ == '__main__':
+    
     app.run(host='0.0.0.0', port='5000', debug=True)
