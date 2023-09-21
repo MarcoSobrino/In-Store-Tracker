@@ -1,7 +1,15 @@
 import cv2
 import numpy as np
 
-dimentions = (600,480)
+dimensions = (600,480)
+
+def inFrame(a):
+    if a[0] < 0 or a[1] < 0:
+        return False
+    if a[0] + a[2] > 600 or a[1] + a[3] > 480:
+        return False
+    return True
+    
 
 def intersection_area(a,b):
     x = max(a[0], b[0])
@@ -19,8 +27,8 @@ def max_intersect(a,b):
 
 def get_region(a):
     ret = 1
-    if a[1] + a[3] > 240:
-        ret +=2
+    # if a[1] + a[3] > 240:
+    #     ret +=2
     if a[0] + a[2] > 300:
         ret+=1
     return ret
@@ -46,6 +54,10 @@ class VideoCamera(object):
         self.previous_count = 0
         self.current_count = 0
         self.total_count = 0
+        with open("output.txt", "w") as file:      
+            file.write("\n")
+
+
 
     
 
@@ -54,27 +66,34 @@ class VideoCamera(object):
         self.video.release()
         cv2.destroyAllWindows()
 
-    def get_frame(self):
+    def get_frame(self, count):
         # Read the frame from the camera
         ret, frame = self.video.read()
 
         # Resize the frame
-        frame = cv2.resize(frame, dimentions)
+        frame = cv2.resize(frame, dimensions)
+        # cv2.line(frame, (0, 240), (600,240), (0, 0, 255), 1)
+        cv2.line(frame, (300,0), (300,480), (0, 0, 255), 1)
+        
 
         #update list of trackers
         for i, tracker in enumerate(self.active_trackers):
-            success, bbox = self.active_trackers[i].update(frame)
-            if success:
-                x, y, w, h = [int(v) for v in bbox]
-                self.active_trackers_locations[i] = get_region(bbox)
-                self.active_trackers_bbox[i] = bbox
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            else:
-                self.active_trackers_locations[i] = 0
+            if tracker != 0:
+                success, bbox = self.active_trackers[i].update(frame)
+                if success and inFrame(bbox):
+                    x, y, w, h = [int(v) for v in bbox]
+                    self.active_trackers_locations[i] = get_region(bbox)
+                    self.active_trackers_bbox[i] = bbox
+                    cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                else:
+                    self.active_trackers[i] = 0
+                    self.active_trackers_locations[i] = 0
+                    #self.active_trackers_bbox[i] = 0
 
         # Detect bodies in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
-        
+        for (x,y,w,h) in human:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
         
 
         # Add unknown humans to tracker list
@@ -82,7 +101,7 @@ class VideoCamera(object):
             bbox = (x,y,w,h)
             inList = False
             for i, tracker in enumerate(self.active_trackers_bbox):
-                if max_intersect(bbox,tracker) < 0.8:
+                if max_intersect(bbox,tracker) > 0.8:
                     inList = True
             if not inList:
                 #create new tracker
@@ -101,6 +120,14 @@ class VideoCamera(object):
 
         # Encode the frame as an image file
         ret, jpeg = cv2.imencode('.jpg', frame)
+
+        #push locations to file
+        
+        if count%10 == 0:    
+            with open("output.txt", "a") as file:      
+                for location in self.active_trackers_locations:
+                    file.write(str(location))
+                file.write("\n")
 
         return jpeg.tobytes()
 
