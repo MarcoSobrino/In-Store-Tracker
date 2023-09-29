@@ -31,6 +31,14 @@ def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+def runCommand(command):
+    con = sqlite3.connect('LiveTracking.db')
+    c = con.cursor()
+    c.execute(command)
+    con.commit()
+    con.close()
+
 con = sqlite3.connect('LiveTracking.db')
 c = con.cursor()
 c.execute("""CREATE TABLE IF NOT EXISTS timeTable (
@@ -39,12 +47,13 @@ c.execute("""CREATE TABLE IF NOT EXISTS timeTable (
             endTime integer
             )""")
 
-# c.execute("INSERT INTO timeTable VALUES (1, 0, 0)")
+# c.execute("DELETE FROM timeTable WHERE customerID = 2")
 # c.execute("INSERT INTO timeTable VALUES (2, 0, 0)")
 c.execute("SELECT * from timeTable")
 print(c.fetchall())
 
 con.commit()
+con.close()
 
 
 

@@ -37,7 +37,7 @@ class VideoCamera(object):
         # self.body_cascade = cv2.CascadeClassifier('/Users/marcosobr/Desktop/Science of Computers/SeniorProject/In-Store-Tracker/LiveTracking/components/haarcascade_fullbody.xml')
         self.hog = cv2.HOGDescriptor()
         self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-
+        self.fgbd = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=10, detectShadows=False)
         
         self.past_humans = []
         self.unchanged_history = []
@@ -63,7 +63,9 @@ class VideoCamera(object):
         cv2.line(frame, (0, 240), (600,240), (0, 0, 255), 1)
         cv2.line(frame, (300,0), (300,480), (0, 0, 255), 1)
         
-
+        #Apply background subtraction
+        fgmask = self.fgbd.apply(frame)
+        res = cv2.bitwise_and(frame,frame, mask= fgmask)
 
         # Detect humans in the frame
         human, weights = self.hog.detectMultiScale(frame, winStride=(8,8))
@@ -92,18 +94,17 @@ class VideoCamera(object):
                 self.unchanged_history.pop(i)
                 self.past_humans.pop(i)
 
-
-
-        # Encode the frame as an image file
-        ret, jpeg = cv2.imencode('.jpg', frame)
-
         #push locations to file
-        
         if count%10 == 0:    
             with open("output_opy.txt", "a") as file:      
                 for location in self.past_humans:
                     file.write(str(get_region(location)))
                 file.write("\n")
+
+        # Encode the frame as an image file
+        ret, jpeg = cv2.imencode('.jpg', res)
+
+        
 
         return jpeg.tobytes()
 
