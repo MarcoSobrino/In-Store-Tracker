@@ -4,6 +4,15 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            function modify(){
+                //update style attribute of element "h2"
+                let numCustomers = document.getElementById("customerCount");
+                numCustomers.setAttribute("style", "color: red; font-size: 50px;");
+
+            }
+        </script>
         <title>InStoreTracker</title>
         <link rel = "stylesheet" type="text/css" href = "{{ url_for('static', filename='IST.css') }}">
     </head>
@@ -36,7 +45,8 @@
         <main>
             <h1>Live Video Feed</h1>
             <img id="bg" src="{{ url_for('video_feed') }}">
-            <h2>Current Customers: 1</h2>
+            <h2 id = "customerCount">Current Customers: 1</h2>
+            <button onclick="modify()">add to customer count</button>
         </main>
 
         <div class = "clearfix">
