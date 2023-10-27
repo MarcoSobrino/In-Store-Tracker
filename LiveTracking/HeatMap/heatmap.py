@@ -3,10 +3,16 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pickle
 
-excel_file = (r".\LiveTracking\HeatMap\testData.xlsx")
-xldata = pd.read_excel(excel_file, sheet_name="test", index_col=0)
-xl_clean = xldata.replace(np.NaN, 0)
+csv_file = (r".\LiveTracking\HeatMap\test.csv")
+xldata = pd.read_csv(csv_file, index_col=0)
+xl_clean = xldata.fillna(0) 
+
+
+#excel_file = (r".\LiveTracking\HeatMap\testData.xlsx")
+#xldata = pd.read_excel(excel_file, sheet_name="test", index_col=0)
+#xl_clean = xldata.replace(np.NaN, 0)
 
 # print(xl_clean)
 
@@ -30,3 +36,6 @@ plt.show()
 
 print("Largest Value: ", largest_value)
 print("Section with the Largest Value (1-based index): Row", largest_value_row, "Column", largest_value_col)
+
+with open("heatmap_data.pkl", "wb") as f:
+    pickle.dump((largest_value, largest_value_row), f)

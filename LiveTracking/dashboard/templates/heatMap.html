@@ -39,8 +39,8 @@
                 <img src = "{{ url_for('static', filename='heatmap.png') }}" alt = "HeatMapExample">
             </div>
 
-            <h2>24 hour customer high: 12</h2>
-            <h2>24 hour customer low: 0</h2>
+            <h2>24 hour customer high: {{largest_value}}</h2>
+            <h2>Most populated section: {{largest_value_row}}</h2>
         </main>
 
         <div class = "clearfix">

@@ -1,4 +1,5 @@
 import sqlite3
+import pickle
 
 from flask import Flask, render_template, Response
 from camera_copy import VideoCamera
@@ -11,7 +12,11 @@ def index():
 
 @app.route('/heatMap')
 def heatMap():
-    return render_template('heatMap.html')
+
+    with open(r".\heatmap_data.pkl", "rb") as f:
+        largest_value, largest_value_row = pickle.load(f)
+
+    return render_template('heatMap.html', largest_value=largest_value, largest_value_row=largest_value_row )
 
 @app.route('/license')
 def license():
