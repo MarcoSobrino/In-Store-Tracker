@@ -13,10 +13,11 @@ def index():
 @app.route('/heatMap')
 def heatMap():
 
-    with open(r".\heatmap_data.pkl", "rb") as f:
-        largest_value, largest_value_row = pickle.load(f)
+    
+    with open("heatmap_data.pkl", "rb") as f:
+        largest_value, largest_value_row, largest_value_col = pickle.load(f)
 
-    return render_template('heatMap.html', largest_value=largest_value, largest_value_row=largest_value_row )
+    return render_template('heatMap.html', largest_value=largest_value, largest_value_row=largest_value_row, largest_value_col=largest_value_col)
 
 @app.route('/license')
 def license():

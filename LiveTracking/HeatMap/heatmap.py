@@ -38,4 +38,4 @@ print("Largest Value: ", largest_value)
 print("Section with the Largest Value (1-based index): Row", largest_value_row, "Column", largest_value_col)
 
 with open("heatmap_data.pkl", "wb") as f:
-    pickle.dump((largest_value, largest_value_row), f)
+    pickle.dump((largest_value, largest_value_row, largest_value_col), f)
