@@ -2,7 +2,7 @@ import sqlite3
 import pickle
 
 from flask import Flask, render_template, Response
-from camera_copy import VideoCamera
+from net_cam import VideoCapture
 
 app = Flask(__name__)
 
@@ -34,7 +34,7 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera()),
+    return Response(gen(VideoCapture("Cam")),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
