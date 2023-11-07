@@ -193,8 +193,8 @@ class VideoCapture:
 
         self.ssd = SSD(self.ssd_proc, self.ssd_net)
 
-        self.video_path = "Videos/StoreTrack1.mp4"
-        self.cap = cv2.VideoCapture(0)
+        self.video_path = "Videos/StoreTrack2.mp4"
+        self.cap = cv2.VideoCapture(self.video_path)
 
         # Define the codec and create VideoWriter object
         self.fourcc = cv2.VideoWriter_fourcc(*'XVID')
