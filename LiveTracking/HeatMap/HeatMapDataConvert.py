@@ -6,7 +6,7 @@ def convert_heatmap_data(date):
     conn = sqlite3.connect('LiveTracking.db')
 
     if not conn:
-        print("Error connecting to database.")
+        print("Error connecting to the database.")
         return
 
     # Specify the date you want to retrieve
@@ -30,8 +30,15 @@ def convert_heatmap_data(date):
         # Create a DataFrame with the 4x4 grid
         grid_df = pd.DataFrame(data_grid)
 
-    # Write the DataFrame to a CSV file
-    grid_df.to_csv('test.csv', index=False, header=False)  # Index is not needed in the CSV
+    # Create a DataFrame with the desired row and column labels
+    row_labels = ['d', 'c', 'b', 'a']
+    col_labels = ['A', 'B', 'C', 'D']
+
+    grid_df = pd.DataFrame(data_grid, columns=col_labels, index=row_labels)
+
+    # Write the DataFrame to a CSV file with the first row as column names
+    grid_df.to_csv('test.csv')
+
     print("Success")
 
 convert_heatmap_data('12/01/23')

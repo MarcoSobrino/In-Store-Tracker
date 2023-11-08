@@ -19,10 +19,12 @@ xl_clean = xldata.fillna(0)
 heatmap_data = xl_clean
 
 sns.heatmap(heatmap_data, annot=True)
+#sns.heatmap(xldata, annot=True, cmap='coolwarm', fmt='d', cbar=False, square=True)
 plt.tight_layout()
 
 largest_value = heatmap_data.values.max()
-largest_value_position = np.unravel_index(heatmap_data.values.argmax(), heatmap_data.shape)
+#largest_value_position = np.unravel_index(heatmap_data.values.argmax(), heatmap_data.shape)
+largest_value_position = np.unravel_index(xldata.values.argmax(), xldata.shape)
 
 largest_value_row = largest_value_position[0] + 1
 largest_value_col = largest_value_position[1] + 1
