@@ -1,5 +1,6 @@
 import pandas as pd
 import sqlite3
+import os
 
 def convert_heatmap_data(date):
     # Connect to the local SQLite database
@@ -36,8 +37,11 @@ def convert_heatmap_data(date):
 
     grid_df = pd.DataFrame(data_grid, columns=col_labels, index=row_labels)
 
-    # Write the DataFrame to a CSV file with the first row as column names
+    # Write the DataFrame to a CSV file with the first row as column names then save to same directory as this file
     grid_df.to_csv('test.csv')
+
+    #move the csv file to the HeatMap directory and replace if already exits
+    os.replace('test.csv', os.path.join(os.path.dirname(__file__), 'test.csv'))
 
     print("Success")
 
