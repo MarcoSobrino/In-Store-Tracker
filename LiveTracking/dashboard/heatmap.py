@@ -29,6 +29,11 @@ def generateHeatmap():
     #sns.heatmap(xldata, annot=True, cmap='coolwarm', fmt='d', cbar=False, square=True)
     plt.tight_layout()
 
+
+    #toBeDisplayed = registerData(dateParameter)
+
+
+
     largest_value = heatmap_data.values.max()
     #largest_value_position = np.unravel_index(heatmap_data.values.argmax(), heatmap_data.shape)
     largest_value_position = np.unravel_index(xldata.values.argmax(), xldata.shape)
@@ -52,3 +57,7 @@ def generateHeatmap():
         pickle.dump((largest_value, largest_value_row, largest_value_col), f)
 
 #generateHeatmap()
+
+#def registerData(date)
+    #get value of total - button press from data base
+    #return that value
