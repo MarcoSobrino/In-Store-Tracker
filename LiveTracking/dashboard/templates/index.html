@@ -5,16 +5,29 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script>
-            function modify(){
-                //update style attribute of element "h2"
-                let numCustomers = document.getElementById("customerCount");
-                numCustomers.setAttribute("style", "color: red; font-size: 50px;");
-
-            }
-        </script>
         <title>InStoreTracker</title>
         <link rel = "stylesheet" type="text/css" href = "{{ url_for('static', filename='IST.css') }}">
+        
+         <style>
+        main {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        main p {
+            width: 50%;
+            padding: 20px;
+        }
+
+        main img {
+            width: 50%;
+            max-width: 100%; /* Ensure the image doesn't exceed its original size */
+            height: auto;
+        }
+    </style>
+    
     </head>
 
 <body>
@@ -28,7 +41,7 @@
         
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('index') }}">Video Feed</a></li>
+                    <li><a href="{{ url_for('index') }}">Home Page</a></li>
                     <li><a href="{{ url_for('heatMap') }}">Heat Map</a></li>
                     <li><a href="{{ url_for('license') }}">License</a></li>
                 </ul>
@@ -43,10 +56,9 @@
 
 
         <main>
-            <h1>Live Video Feed</h1>
-            <img id="bg" src="{{ url_for('video_feed') }}">
-            <h2 id = "customerCount">Current Customers: 1</h2>
-            <button onclick="modify()">add to customer count</button>
+            <h1>Tracking System</h1>
+            <p>This is temporary text for the text blob below the heading. Replace it with your actual content.</p>
+            <img src="{{ url_for('static', filename='heatmap.png') }}">
         </main>
 
         <div class = "clearfix">

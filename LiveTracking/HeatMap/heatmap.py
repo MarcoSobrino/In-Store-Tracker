@@ -4,13 +4,20 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle
+import os
 
-csv_file = (r".\LiveTracking\HeatMap\test.csv")
+
+
+#set var csv_file to the file test.csv in the same directory as this file
+csv_file = os.path.join(os.path.dirname(__file__), 'test.csv')
+
 xldata = pd.read_csv(csv_file, index_col=0)
 xl_clean = xldata.fillna(0) 
 
 
 #excel_file = (r".\LiveTracking\HeatMap\testData.xlsx")
+
+#excel_file = os.path.join(os.path.dirname(__file__), 'testData.xlsx')
 #xldata = pd.read_excel(excel_file, sheet_name="test", index_col=0)
 #xl_clean = xldata.replace(np.NaN, 0)
 
@@ -19,16 +26,20 @@ xl_clean = xldata.fillna(0)
 heatmap_data = xl_clean
 
 sns.heatmap(heatmap_data, annot=True)
+#sns.heatmap(xldata, annot=True, cmap='coolwarm', fmt='d', cbar=False, square=True)
 plt.tight_layout()
 
 largest_value = heatmap_data.values.max()
-largest_value_position = np.unravel_index(heatmap_data.values.argmax(), heatmap_data.shape)
+#largest_value_position = np.unravel_index(heatmap_data.values.argmax(), heatmap_data.shape)
+largest_value_position = np.unravel_index(xldata.values.argmax(), xldata.shape)
 
 largest_value_row = largest_value_position[0] + 1
 largest_value_col = largest_value_position[1] + 1
 
 #save to the static directory of the dashboard directory
-savePath = (r"C:\Users\senti\Desktop\Senior Project\Repo\In-Store-Tracker\LiveTracking\dashboard\static\heatmap.png")
+#set var savePath to directory up one directory then down 2 directories using os
+savePath = os.path.join(os.path.dirname(__file__), '..\dashboard\static\heatmap.png')
+
 
 plt.savefig(savePath)
 

@@ -19,7 +19,7 @@
         
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('index') }}">Video Feed</a></li>
+                    <li><a href="{{ url_for('index') }}">Home Page</a></li>
                     <li><a href="{{ url_for('heatMap') }}">Heat Map</a></li>
                     <li><a href="{{ url_for('license') }}">License</a></li>
                 </ul>
@@ -36,7 +36,7 @@
         <main>
             <h1>Heat map of 24 hours</h1>
             <div class = "heatMap">
-                <img src = "{{ url_for('static', filename='heatmap.png') }}" alt = "HeatMapExample">
+                <img src = "{{ url_for('static', filename='heatmap.png') }}">
             </div>
 
             <h2>24 hour customer high: {{largest_value}}</h2>
