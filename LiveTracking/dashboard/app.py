@@ -1,7 +1,10 @@
+# app.py
 import sqlite3
 import pickle
+from flask import Flask, render_template, Response, request, jsonify
+from heatmap import generateHeatmap  # Import heatmap module
 
-from flask import Flask, render_template, Response
+from HeatMapDataConvert import convert_heatmap_data
 from net_cam import VideoCapture
 
 app = Flask(__name__)
@@ -9,6 +12,20 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/call_python_function', methods=['POST'])
+def call_python_function():
+    data = request.get_json()
+    date_parameter = data.get('parameter')
+
+    # Call the convert_heatmap_data function with the date parameter
+    result = convert_heatmap_data(date_parameter)
+
+    # Import heatmap module here and call the function
+    from heatmap import generateHeatmap
+    generateHeatmap()
+
+    return jsonify({'result': result})
 
 @app.route('/heatMap')
 def heatMap():

@@ -43,7 +43,7 @@ nav a {
     padding: 5px 25px;
     display: block;
     transition: 0.5s;
-    color: #85754d
+    color: #85754d;
 }
 
 nav ul {
@@ -74,6 +74,7 @@ main {
     width: 80%;
     margin: 40px auto;
     border-top: solid 10px #85754d;
+    min-height: 100vh; /* Ensure main takes at least the full height of the viewport */
 }
 
 footer {
@@ -112,4 +113,29 @@ footer a:hover {
 .heatMap img {
     width: 100%;
     display: block;
+}
+
+/* Additional styling for text input and button */
+main input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    width: 200px;
+    font-size: 16px;
+}
+
+main button {
+    padding: 10px 20px;
+    background-color: #05386B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+main button:hover {
+    background-color: #379682;
+    border-radius: 15px;
 }
