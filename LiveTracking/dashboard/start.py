@@ -1,1 +1,2 @@
-print("Starting the Recording!")
+def startFunc():
+    print("Starting the Recording!")

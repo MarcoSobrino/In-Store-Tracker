@@ -23,7 +23,8 @@
         }
 
         /* Style for disabled button */
-        #generateButton:disabled {
+        #generateButton:disabled,
+        #stopButton:disabled {
             background-color: #d3d3d3; /* Light gray background */
             color: #808080; /* Dark gray text color */
             cursor: not-allowed; /* Disable pointer events */
@@ -34,7 +35,6 @@
 
 <body>
     <div id="wrapper">
-
         <header>
             <div class="topBox">
                 <div class="logo">
@@ -55,6 +55,12 @@
         <div class="banner"></div>
 
         <main>
+            <!-- Add the start and stop buttons within the main section -->
+            <div>
+                <button id="startButton" onclick="startFunction()">Start</button>
+                <button id="stopButton" onclick="stopFunction()" disabled>Stop</button>
+            </div>
+
             <label for="parameterInput">Please enter desired date for heatmap data:</label>
             <input type="text" id="parameterInput" placeholder="dd/mm/yy">
             <button id="generateButton" onclick="callPythonFunction()" disabled>Generate Heatmap</button>
@@ -71,14 +77,16 @@
                 document.write(date);
             </script>
         </footer>
-
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var inputField = document.getElementById('parameterInput');
             var generateButton = document.getElementById('generateButton');
+            var startButton = document.getElementById('startButton');
+            var stopButton = document.getElementById('stopButton');
 
+            // Event listener for the Generate Heatmap button
             inputField.addEventListener('input', function () {
                 var parameter = inputField.value;
 
@@ -94,6 +102,43 @@
                     // If the format is correct, enable the button
                     generateButton.disabled = false;
                 }
+            });
+
+            // Event listener for the Start button
+            startButton.addEventListener('click', function () {
+                // Enable the start button and stop button
+                fetch('/start_script', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+
+                startButton.disabled = true;
+                stopButton.disabled = false;
+            });
+
+            // Event listener for the Stop button
+            stopButton.addEventListener('click', function () {
+                // Use AJAX to send a request to stop the external script
+            fetch('/stop_script', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+                
+                // Disable the start button and stop button
+                startButton.disabled = false;
+                stopButton.disabled = true;
             });
         });
 

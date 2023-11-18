@@ -3,6 +3,8 @@ import sqlite3
 import pickle
 from flask import Flask, render_template, Response, request, jsonify
 from heatmap import generateHeatmap  # Import heatmap module
+from start import startFunc
+from stop import stopFunc
 
 from HeatMapDataConvert import convert_heatmap_data
 from net_cam import VideoCapture
@@ -26,6 +28,20 @@ def call_python_function():
     generateHeatmap(date_parameter)
 
     return jsonify({'result': result})
+
+@app.route('/start_script', methods=['POST'])
+def start_script():
+    from start import startFunc
+    startFunc()
+
+    return jsonify({'status': 'success'})
+
+@app.route('/stop_script', methods=['POST'])
+def stop_script():
+    from stop import stopFunc
+    stopFunc()
+
+    return jsonify({'status': 'success'})
 
 @app.route('/heatMap')
 def heatMap():

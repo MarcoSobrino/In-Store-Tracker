@@ -1,1 +1,2 @@
-print("Stopping the Recording!")
+def stopFunc():
+    print("Stopping the Recording!")
