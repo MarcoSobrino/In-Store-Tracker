@@ -34,13 +34,13 @@
 
 
         <main>
-            <h1>Heat map of 24 hours</h1>
+            <h1>Heat map of {{date}}</h1>
             <div class = "heatMap">
                 <img src = "{{ url_for('static', filename='heatmap.png') }}">
             </div>
 
-            <h2>24 hour customer high: {{largest_value}}</h2>
-            <h2>Most populated section:  {{largest_value_col}}, {{largest_value_row}}</h2>
+            <h2>Total Customers: {{totalEntries}}</h2>
+            <h2>Number of Customers who left without making a purchase:  {{entriesVsPresses}}</h2>
         </main>
 
         <div class = "clearfix">

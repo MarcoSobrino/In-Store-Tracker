@@ -106,12 +106,11 @@ footer a:hover {
 
 .heatMap {
     width: 73%;
-    box-shadow: 10px 15px 3px #85754d;
     margin-top: 25px;
 }
 
 .heatMap img {
-    width: 100%;
+    width: 75%;
     display: block;
 }
 

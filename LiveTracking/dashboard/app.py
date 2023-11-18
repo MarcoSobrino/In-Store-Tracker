@@ -23,7 +23,7 @@ def call_python_function():
 
     # Import heatmap module here and call the function
     from heatmap import generateHeatmap
-    generateHeatmap()
+    generateHeatmap(date_parameter)
 
     return jsonify({'result': result})
 
@@ -32,9 +32,9 @@ def heatMap():
 
     
     with open("heatmap_data.pkl", "rb") as f:
-        largest_value, largest_value_row, largest_value_col = pickle.load(f)
+        totalEntries, entriesVsPresses, date = pickle.load(f)
 
-    return render_template('heatMap.html', largest_value=largest_value, largest_value_row=largest_value_row, largest_value_col=largest_value_col)
+    return render_template('heatMap.html', totalEntries = totalEntries, entriesVsPresses = entriesVsPresses, date = date)
 
 @app.route('/license')
 def license():

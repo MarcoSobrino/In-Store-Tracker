@@ -21,6 +21,13 @@
             width: 50%;
             padding: 20px;
         }
+
+        /* Style for disabled button */
+        #generateButton:disabled {
+            background-color: #d3d3d3; /* Light gray background */
+            color: #808080; /* Dark gray text color */
+            cursor: not-allowed; /* Disable pointer events */
+        }
     </style>
 
 </head>
@@ -44,24 +51,17 @@
             </div>
         </header>
 
-        <div class="clearfix">
-        </div>
-        <div class="banner">
-        </div>
-
+        <div class="clearfix"></div>
+        <div class="banner"></div>
 
         <main>
-            <h1>Tracking System</h1>
-            <p>This is temporary text for the text blob below the heading. Replace it with your actual content.</p>
             <label for="parameterInput">Please enter desired date for heatmap data:</label>
             <input type="text" id="parameterInput" placeholder="dd/mm/yy">
-            <button onclick="callPythonFunction()">Generate Heatmap</button>
-            <p id="errorMessage" style="color: red; display: none;">Invalid input, data not in database for specified day</p>
+            <button id="generateButton" onclick="callPythonFunction()" disabled>Generate Heatmap</button>
+            <p id="errorMessage" style="color: red; display: none;">Invalid input, data not in the database for the specified day</p>
         </main>
 
-        <div class="clearfix">
-
-        </div>
+        <div class="clearfix"></div>
 
         <footer>
             <a href="https://www.postandparcel.com/">Post and Parcel Bellingham</a>
@@ -75,8 +75,31 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var inputField = document.getElementById('parameterInput');
+            var generateButton = document.getElementById('generateButton');
+
+            inputField.addEventListener('input', function () {
+                var parameter = inputField.value;
+
+                // Regular expression to match dd/mm/yy format
+                var dateFormatRegex = /^\d{2}\/\d{2}\/\d{2}$/;
+
+                // Check if the input matches the expected format
+                if (!dateFormatRegex.test(parameter)) {
+                    // If not, hide the error message and disable the button
+                    document.getElementById('errorMessage').style.display = 'none';
+                    generateButton.disabled = true;
+                } else {
+                    // If the format is correct, enable the button
+                    generateButton.disabled = false;
+                }
+            });
+        });
+
         function callPythonFunction() {
             var parameter = document.getElementById('parameterInput').value;
+            var generateButton = document.getElementById('generateButton');
 
             // Use AJAX to send a request to the Flask server with the parameter
             fetch('/call_python_function', {
@@ -98,7 +121,11 @@
                     }
                 })
                 .then(data => console.log(data))
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Error:', error))
+                .finally(() => {
+                    // Disable the button after the request is completed
+                    generateButton.disabled = true;
+                });
         }
     </script>
 
