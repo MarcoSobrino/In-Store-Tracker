@@ -99,7 +99,6 @@ def track_simple(start_time = 1699330493, grace_period = 8):
 
     final_counts = get_total_zone_entries(zone_counts)
     # Output the result
-    print(final_counts)
     return final_counts
 
 if __name__ == "__main__":
