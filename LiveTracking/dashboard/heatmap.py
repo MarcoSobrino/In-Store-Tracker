@@ -46,9 +46,18 @@ def generateHeatmap(dateParameter):
 
 #generateHeatmap()
 
-#def registerData(date)
-    #get value of total - button press from data base
-    #return that value
+def registerData(date):
+    # Connect to the local SQLite database
+    conn = sqlite3.connect('LiveTracking.db')
+
+    if not conn:
+        print("Error connecting to the database.")
+        return
+    
+    # Query the database to retrieve the data for the specified date
+    query = f"SELECT ButtonPresses FROM RegisterData WHERE Date = '{date}'"
+
+    return query
 
 def total(date):
     # Connect to the local SQLite database
