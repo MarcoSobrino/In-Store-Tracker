@@ -20,7 +20,7 @@ def startFunc():
     month = str(time_data.tm_mon)
     day = str(time_data.tm_mday)
     year = str(time_data.tm_year)
-    date = month.rjust(2,'0') + "/" + day.rjust(2,'0') + "/" + year.rjust(4,'0')
+    date = month.rjust(2,'0') + "/" + day.rjust(2,'0') + "/" + year[-2:]
     
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM HeatMap WHERE date = ?", (date,))
