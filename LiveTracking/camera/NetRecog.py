@@ -203,8 +203,11 @@ def start_func():
 
     running = conn.execute("SELECT * FROM running")
 
-    while cap.isOpened() and running.fetchone()[0] == 1:
+    value = running.fetchone()[0]
+    print(value)
+    while cap.isOpened() and value == 1:
         running = conn.execute("SELECT * FROM running")
+        value = running.fetchone()[0]
         frame_count += 1
         ret, frame = cap.read()
         if not ret:

@@ -3,8 +3,6 @@ from NetRecog import start_func
 from Track_simple import track_simple
 
 def startFunc():
-    print("Starting the Recording!")
-
 
     #connect to the database
     conn = sqlite3.connect('LiveTracking.db')
