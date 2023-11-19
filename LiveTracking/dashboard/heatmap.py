@@ -5,6 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle
 import os
+import sqlite3
 
 
 def generateHeatmap(dateParameter):
@@ -22,9 +23,7 @@ def generateHeatmap(dateParameter):
 
     #entriesVsPresses = registerData(dateParameter)
 
-    #totalEntries = total(dateParameter)
-
-    totalEntries = 10
+    totalEntries = total(dateParameter)
 
     entriesVsPresses = 5
 
@@ -51,6 +50,15 @@ def generateHeatmap(dateParameter):
     #get value of total - button press from data base
     #return that value
 
-#def total(date)
-    #get value of total from table
-    #return that value
+def total(date):
+    # Connect to the local SQLite database
+    conn = sqlite3.connect('LiveTracking.db')
+
+    if not conn:
+        print("Error connecting to the database.")
+        return
+
+    # Query the database to retrieve the data for the specified date
+    query = f"SELECT Total FROM RegisterData WHERE Date = '{date}'"
+    
+    return query
