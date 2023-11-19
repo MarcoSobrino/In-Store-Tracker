@@ -7,6 +7,52 @@ import pickle
 import os
 import sqlite3
 
+def registerData(date):
+    # Connect to the local SQLite database
+    conn = sqlite3.connect('LiveTracking.db')
+
+    if not conn:
+        print("Error connecting to the database.")
+        return
+    
+    # Query the database to retrieve the data for the specified date
+    query = f"SELECT ButtonPresses FROM HeatMap WHERE Date = '{date}'"
+    df = pd.read_sql_query(query, conn)
+
+    # Close the database connection when done
+    conn.close()
+
+    if df.empty:
+        print("No data found for the specified date.")
+        return None
+    else:
+        # Extract the total value
+        total_value = df['ButtonPresses'].iloc[0]
+        return total_value
+
+def total(date):
+    # Connect to the local SQLite database
+    #Comment
+    conn = sqlite3.connect('LiveTracking.db')
+
+    if not conn:
+        print("Error connecting to the database.")
+        return
+
+    # Query the database to retrieve the data for the specified date
+    query = f"SELECT Total FROM HeatMap WHERE Date = '{date}'"
+    df = pd.read_sql_query(query, conn)
+
+    # Close the database connection when done
+    conn.close()
+
+    if df.empty:
+        print("No data found for the specified date.")
+        return None
+    else:
+        # Extract the total value
+        total_value = df['Total'].iloc[0]
+        return total_value
 
 def generateHeatmap(dateParameter):
     #set var csv_file to the file test.csv in the same directory as this file
@@ -20,12 +66,18 @@ def generateHeatmap(dateParameter):
     sns.heatmap(heatmap_data, annot=True)
     plt.tight_layout()
 
-
-    #entriesVsPresses = registerData(dateParameter)
-
     totalEntries = total(dateParameter)
 
-    entriesVsPresses = 5
+    totalButtonPress = registerData(dateParameter)
+
+    #print(total(dateParameter))
+    #print(registerData(dateParameter))
+    
+    entriesVsPresses = totalEntries - totalButtonPress
+
+    #entriesVsPresses = 6
+
+    #totalEntries = 11
 
     date = dateParameter
 
@@ -44,30 +96,5 @@ def generateHeatmap(dateParameter):
     with open("heatmap_data.pkl", "wb") as f:
         pickle.dump((totalEntries, entriesVsPresses, date), f)
 
-#generateHeatmap()
+#generateHeatmap("12/01/23")
 
-def registerData(date):
-    # Connect to the local SQLite database
-    conn = sqlite3.connect('LiveTracking.db')
-
-    if not conn:
-        print("Error connecting to the database.")
-        return
-    
-    # Query the database to retrieve the data for the specified date
-    query = f"SELECT ButtonPresses FROM RegisterData WHERE Date = '{date}'"
-
-    return query
-
-def total(date):
-    # Connect to the local SQLite database
-    conn = sqlite3.connect('LiveTracking.db')
-
-    if not conn:
-        print("Error connecting to the database.")
-        return
-
-    # Query the database to retrieve the data for the specified date
-    query = f"SELECT Total FROM RegisterData WHERE Date = '{date}'"
-    
-    return query
