@@ -16,7 +16,7 @@ def registerData(date):
         return
     
     # Query the database to retrieve the data for the specified date
-    query = f"SELECT ButtonPresses FROM RegisterData WHERE Date = '{date}'"
+    query = f"SELECT ButtonPresses FROM HeatMap WHERE Date = '{date}'"
     df = pd.read_sql_query(query, conn)
 
     # Close the database connection when done
@@ -40,7 +40,7 @@ def total(date):
         return
 
     # Query the database to retrieve the data for the specified date
-    query = f"SELECT Total FROM RegisterData WHERE Date = '{date}'"
+    query = f"SELECT Total FROM HeatMap WHERE Date = '{date}'"
     df = pd.read_sql_query(query, conn)
 
     # Close the database connection when done
@@ -66,14 +66,14 @@ def generateHeatmap(dateParameter):
     sns.heatmap(heatmap_data, annot=True)
     plt.tight_layout()
 
-    #totalEntries = total(dateParameter)
+    totalEntries = total(dateParameter)
 
-    #totalButtonPress = registerData(dateParameter)
+    totalButtonPress = registerData(dateParameter)
 
-    print(total(dateParameter))
-    print(registerData(dateParameter))
+    #print(total(dateParameter))
+    #print(registerData(dateParameter))
     
-    #entriesVsPresses = total - totalButtonPress
+    entriesVsPresses = totalEntries - totalButtonPress
 
     #entriesVsPresses = 6
 
@@ -96,5 +96,5 @@ def generateHeatmap(dateParameter):
     with open("heatmap_data.pkl", "wb") as f:
         pickle.dump((totalEntries, entriesVsPresses, date), f)
 
-generateHeatmap("12/01/23")
+#generateHeatmap("12/01/23")
 
