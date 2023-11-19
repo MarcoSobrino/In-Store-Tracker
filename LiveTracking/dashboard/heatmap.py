@@ -32,6 +32,7 @@ def registerData(date):
 
 def total(date):
     # Connect to the local SQLite database
+    #Comment
     conn = sqlite3.connect('LiveTracking.db')
 
     if not conn:
