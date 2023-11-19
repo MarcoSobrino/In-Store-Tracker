@@ -17,8 +17,18 @@ def registerData(date):
     
     # Query the database to retrieve the data for the specified date
     query = f"SELECT ButtonPresses FROM RegisterData WHERE Date = '{date}'"
+    df = pd.read_sql_query(query, conn)
 
-    return query
+    # Close the database connection when done
+    conn.close()
+
+    if df.empty:
+        print("No data found for the specified date.")
+        return None
+    else:
+        # Extract the total value
+        total_value = df['ButtonPresses'].iloc[0]
+        return total_value
 
 def total(date):
     # Connect to the local SQLite database
@@ -30,8 +40,18 @@ def total(date):
 
     # Query the database to retrieve the data for the specified date
     query = f"SELECT Total FROM RegisterData WHERE Date = '{date}'"
-    
-    return query
+    df = pd.read_sql_query(query, conn)
+
+    # Close the database connection when done
+    conn.close()
+
+    if df.empty:
+        print("No data found for the specified date.")
+        return None
+    else:
+        # Extract the total value
+        total_value = df['Total'].iloc[0]
+        return total_value
 
 def generateHeatmap(dateParameter):
     #set var csv_file to the file test.csv in the same directory as this file
