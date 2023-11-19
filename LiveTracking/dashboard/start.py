@@ -1,6 +1,8 @@
 import sqlite3
+import time
 from NetRecog import start_func
 from Track_simple import track_simple
+
 
 def startFunc():
 
@@ -14,6 +16,10 @@ def startFunc():
 
     time = start_func()
     array = track_simple(time)
+    time_data = time.gmtime(time)
+    month = time_data.tm_mon
+    day = time_data.tm_mday
+    year = time_data.tm_year
     
     print(array)
 
