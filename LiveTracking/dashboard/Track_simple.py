@@ -52,6 +52,15 @@ def get_zone_counts(detections):
         zone_counts[zone_index] += 1
     return ret 
 
+def get_totals(zone_counts):
+    ret = []
+    for i in zone_counts:
+        current = 0
+        for j in i:
+            current += j
+        ret.append(current)
+    return ret
+
 def basic_error_correction(zone_counts, grace_period, zone):
     # Apply the grace period
     previouse_count = 0
@@ -80,6 +89,8 @@ def get_total_zone_entries(zone_counts):
 
 
 
+
+
 def track_simple(start_time = 1699330493, grace_period = 8):
 
     
@@ -87,18 +98,19 @@ def track_simple(start_time = 1699330493, grace_period = 8):
     detections = get_detections_from_db(start_time)
     #print(f"Total detections: {len(detections)}")
     zone_counts = get_zone_counts(detections)
-    
-    for i in range(grid_size_x * grid_size_y):
-        zone_counts = basic_error_correction(zone_counts, grace_period, i)
+    total_counts = get_totals(zone_counts)
 
     for i,count in enumerate(zone_counts):
-        total = 0
-        for j in count:
-            total += j
-        zone_counts[i].append(total)
+        zone_counts[i].append(total_counts[i])
+
+    for i in range(grid_size_x * grid_size_y + 1):
+        zone_counts = basic_error_correction(zone_counts, grace_period, i)
+
+    
 
     final_counts = get_total_zone_entries(zone_counts)
     # Output the result
+    #print("final_counts {}".format(final_counts))
     return final_counts
 
 if __name__ == "__main__":
