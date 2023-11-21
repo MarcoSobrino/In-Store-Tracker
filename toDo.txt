@@ -1,2 +1,0 @@
-Add motion detection 
-Track with just human detection and overlap
