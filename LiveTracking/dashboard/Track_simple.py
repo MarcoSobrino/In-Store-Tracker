@@ -5,8 +5,8 @@ db_path = 'LiveTracking.db'  # Update this with your database path
   # Number of frames to wait before counting a person again
 
 # Frame dimensions and grid size
-frame_width = 1920  # Update with your frame width
-frame_height = 1080  # Update with your frame height
+frame_width = 640  # Update with your frame width
+frame_height = 480  # Update with your frame height
 
 # For a 4x4 grid
 grid_size_x = 4

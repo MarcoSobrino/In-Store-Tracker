@@ -220,9 +220,9 @@ def start_func():
     frame_count = 0
 
     running = conn.execute("SELECT * FROM running")
+    print("frame_size:", frame.shape[0], frame.shape[1])
 
     value = running.fetchone()[0]
-    print(value)
     while cap.isOpened() and value == 1:
         # running = conn.execute("SELECT * FROM running")
         # value = running.fetchone()[0]
@@ -244,7 +244,6 @@ def start_func():
 
         # print("Person count:", len(combined_list))
         # print("All persons:", combined_list)
-        
         Utils.draw_objects(combined_list, "PERSON", (0, 0, 255), frame)
 
         # Write to database
