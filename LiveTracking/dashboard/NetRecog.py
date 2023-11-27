@@ -177,6 +177,24 @@ class Utils:
         for (i, obj) in enumerate(objects):
             Utils.draw_object(obj, label, color, frame) 
 
+def safe_add(conn, sql, args):
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql, args)
+        conn.commit()
+    except sqlite3.Error as e:
+        print("Error: ", e.args[0])
+        safe_add(conn, sql, args)
+
+def safe_get(conn, sql):
+    try:
+        cursor = conn.cursor()
+        data = cursor.execute(sql)
+        return data.fetchone()[0]
+    except sqlite3.Error as e:
+        print("Error: ", e.args[0])
+        safe_get(conn, sql)
+
 
 def start_func():
     proto_file = "Nets/mobilenet.prototxt"
@@ -206,8 +224,10 @@ def start_func():
     value = running.fetchone()[0]
     print(value)
     while cap.isOpened() and value == 1:
-        running = conn.execute("SELECT * FROM running")
-        value = running.fetchone()[0]
+        # running = conn.execute("SELECT * FROM running")
+        # value = running.fetchone()[0]
+        value = safe_get(conn, "SELECT * FROM running")
+
         frame_count += 1
         ret, frame = cap.read()
         if not ret:
@@ -222,16 +242,17 @@ def start_func():
         # Filter out overlapping boxes
         combined_list = filter_overlapping_boxes(left_persons, right_persons, 0.5)
 
-        print("Person count:", len(combined_list))
-        print("All persons:", combined_list)
+        # print("Person count:", len(combined_list))
+        # print("All persons:", combined_list)
         
         Utils.draw_objects(combined_list, "PERSON", (0, 0, 255), frame)
 
         # Write to database
         for person in combined_list:
             (confidence, (x1, y1, w, h)) = person
-            cursor.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?)", (frame_count, start_time, confidence, x1, y1, w, h))
-        conn.commit()
+            safe_add(conn, "INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?)", (frame_count, start_time, confidence, x1, y1, w, h))
+        #     cursor.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?, ?)", (frame_count, start_time, confidence, x1, y1, w, h))
+        # conn.commit()
 
         # Display the frame
         cv2.imshow('Video', frame)
