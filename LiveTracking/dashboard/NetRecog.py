@@ -219,8 +219,10 @@ def start_func():
     start_time = int(time.time())
     frame_count = 0
 
+    threshold = 0.4
+
     running = conn.execute("SELECT * FROM running")
-    print("frame_size:", frame.shape[0], frame.shape[1])
+    #print("frame_size:", frame.shape[0], frame.shape[1])
 
     value = running.fetchone()[0]
     while cap.isOpened() and value == 1:
@@ -236,14 +238,14 @@ def start_func():
         left_obj_data = ssd.detect_left(frame)
         right_obj_data = ssd.detect_right(frame)
 
-        left_persons = ssd.get_objects_left(frame, left_obj_data, person_class, 0.5)
-        right_persons = ssd.get_objects_right(frame, right_obj_data, person_class, 0.5)
+        left_persons = ssd.get_objects_left(frame, left_obj_data, person_class, threshold)
+        right_persons = ssd.get_objects_right(frame, right_obj_data, person_class, threshold)
 
         # Filter out overlapping boxes
-        combined_list = filter_overlapping_boxes(left_persons, right_persons, 0.5)
+        combined_list = filter_overlapping_boxes(left_persons, right_persons, threshold)
 
         # print("Person count:", len(combined_list))
-        # print("All persons:", combined_list)
+        print("All persons:", combined_list)
         Utils.draw_objects(combined_list, "PERSON", (0, 0, 255), frame)
 
         # Write to database

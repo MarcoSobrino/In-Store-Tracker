@@ -25,6 +25,11 @@ def startFunc():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM HeatMap WHERE date = ?", (date,))
     result = cursor.fetchone()
+
+    ########################
+    result = None
+    ########################
+
     if result == None:
         result = [0] * 19
     cursor.execute("DELETE FROM HeatMap WHERE date = ?", (date,))
