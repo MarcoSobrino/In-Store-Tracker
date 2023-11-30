@@ -22,6 +22,8 @@ def call_python_function():
 
     # Call the convert_heatmap_data function with the date parameter
     result = convert_heatmap_data(date_parameter)
+    if(result == -1):
+        return jsonify({'result': result})
 
     # Import heatmap module here and call the function
     from heatmap import generateHeatmap

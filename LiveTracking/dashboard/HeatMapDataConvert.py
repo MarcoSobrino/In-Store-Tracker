@@ -34,5 +34,7 @@ def convert_heatmap_data(date):
         os.replace('test.csv', os.path.join(os.path.dirname(__file__), 'test.csv'))
 
         print("Success")
+    else:
+        return -1
 
-convert_heatmap_data('12/01/23')
+#convert_heatmap_data('12/01/23')

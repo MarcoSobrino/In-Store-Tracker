@@ -62,7 +62,7 @@
             </div>
 
             <label for="parameterInput">Please enter desired date for heatmap data:</label>
-            <input type="text" id="parameterInput" placeholder="dd/mm/yy">
+            <input type="text" id="parameterInput" placeholder="mm/dd/yy">
             <button id="generateButton" onclick="callPythonFunction()" disabled>Generate Heatmap</button>
             <p id="errorMessage" style="color: red; display: none;">Invalid input, data not in the database for the specified day</p>
         </main>
@@ -145,6 +145,7 @@
         function callPythonFunction() {
             var parameter = document.getElementById('parameterInput').value;
             var generateButton = document.getElementById('generateButton');
+            var errorMessage = document.getElementById('errorMessage');
 
             // Use AJAX to send a request to the Flask server with the parameter
             fetch('/call_python_function', {
@@ -154,19 +155,24 @@
                 },
                 body: JSON.stringify({ parameter: parameter }),
             })
-                .then(response => {
-                    if (response.ok) {
-                        // If the response is OK, hide the error message
-                        document.getElementById('errorMessage').style.display = 'none';
-                        return response.json();
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === -1) {
+                        // Display a custom error message
+                        errorMessage.innerText = 'Date does not exist in DataBase';
+                        errorMessage.style.display = 'block';
                     } else {
-                        // If there's an error, display the error message
-                        document.getElementById('errorMessage').style.display = 'block';
-                        throw new Error('Invalid input');
+                        // If the result is not -1, hide the error message
+                        errorMessage.style.display = 'none';
                     }
+                    console.log(data);
                 })
-                .then(data => console.log(data))
-                .catch(error => console.error('Error:', error))
+                .catch(error => {
+                    // Display the default error message
+                    errorMessage.innerText = 'Invalid input, data not in the database for the specified day';
+                    errorMessage.style.display = 'block';
+                    console.error('Error:', error);
+                })
                 .finally(() => {
                     // Disable the button after the request is completed
                     generateButton.disabled = true;
