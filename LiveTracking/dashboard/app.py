@@ -1,15 +1,19 @@
 # app.py
+import os
 import sqlite3
 import pickle
 from flask import Flask, render_template, Response, request, jsonify
 from heatmap import generateHeatmap  # Import heatmap module
 from start import startFunc
 from stop import stopFunc
+import webbrowser
+import subprocess
 
 from HeatMapDataConvert import convert_heatmap_data
 from net_cam import VideoCapture
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -91,7 +95,7 @@ c.execute("""CREATE TABLE IF NOT EXISTS timeTable (
 # c.execute("DELETE FROM timeTable WHERE customerID = 2")
 # c.execute("INSERT INTO timeTable VALUES (2, 0, 0)")
 c.execute("SELECT * from timeTable")
-print(c.fetchall())
+#print(c.fetchall())
 
 con.commit()
 con.close()
@@ -100,4 +104,7 @@ con.close()
 
 if __name__ == '__main__':
     
-    app.run(host='0.0.0.0', port='5000', debug=True)
+    webbrowser.open('http://127.0.0.1:5000')
+    app.run(debug=False)
+
+
