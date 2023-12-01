@@ -4,14 +4,14 @@
 
 ## Dependencies:
 - Python 3.12
-- pip
+- Pip
 - Flask
 - SQLite
 - Pickle
 - Pandas
 - Numpy
 - Seaborn
-- matplotlib
+- Matplotlib
 - OpenCV
 
 ## Set Up Instructions:
@@ -20,7 +20,7 @@
 3. Navigate to the repository directory on the local machine.
 4. Verify or download the list of dependencies above (`pip install` can be used in the project directory).
 5. Run `App.py`.
-6. Follow the link returned by the terminal to the Local Host webpage.
+6. A webpage should open for use.
 
 ## Termination Instructions:
 1. Verify the current location is the project directory.
