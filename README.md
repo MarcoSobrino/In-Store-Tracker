@@ -18,8 +18,8 @@
 1. Verify an up-to-date installation of Python and pip.
 2. Pull the entire repository to the local machine.
 3. Navigate to the repository directory on the local machine.
-4. Verify or download the list of dependencies above (`pip install` can be used in the project directory).
-5. Run `App.py`.
+4. Verify or download the list of dependencies above (running ${pip install -r requirements.txt} should download all needed dependencies).
+5. Run `App.py`. (can be located from root as ./LiveTracking/dashboard/app.py)
 6. A webpage should open for use.
 
 ## Termination Instructions:
