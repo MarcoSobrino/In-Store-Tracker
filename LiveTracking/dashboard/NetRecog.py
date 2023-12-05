@@ -219,7 +219,7 @@ def start_func():
     start_time = int(time.time())
     frame_count = 0
 
-    threshold = 0.4
+    threshold = 0.3
 
     running = conn.execute("SELECT * FROM running")
     #print("frame_size:", frame.shape[0], frame.shape[1])
