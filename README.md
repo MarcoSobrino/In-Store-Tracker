@@ -1,5 +1,7 @@
 # In-Store-Tracker
 
+NOTE: HEATMAP DATE IS BASED ON DATE RELATIVE TO UK TIME ZONE (GMT)
+
 **Covered Under BSD-3 Clause Open Source License**
 
 ## Dependencies:
